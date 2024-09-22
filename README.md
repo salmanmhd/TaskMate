@@ -21,7 +21,7 @@ TaskMate is a simple and efficient Todo app built using the MERN stack (MongoDB,
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/taskmate.git
+   git clone https://github.com/salmanmhd/taskmate.git
    ```
 
 2. Install backend dependencies:

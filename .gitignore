@@ -1,1 +1,30 @@
-node_modules
+# Node.js dependencies
+node_modules/
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build files
+build/
+dist/
+
+# React specific
+node_modules/
+.env
+.DS_Store
+public/
+
+# Ignore local development environment settings
+.vscode/
+.idea/
+
+
+
+# Ignore any compiled files
+*.out
+*.o
