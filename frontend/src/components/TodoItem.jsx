@@ -51,7 +51,7 @@ export default function TodoItem({
         <div className='relative flex items-center justify-between mb-4'>
           <div className='flex items-center gap-4'>
             <button
-              onClick={() => onToggle(todo.id)}
+              onClick={() => onToggle(todo._id)}
               className='text-gray-400 hover:text-teal-500 transition-colors'
             >
               {todo.completed ? (
@@ -88,7 +88,7 @@ export default function TodoItem({
             </div>
           </div>
           <button
-            onClick={() => onDelete(todo.id)}
+            onClick={() => onDelete(todo._id)}
             className='text-gray-500 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity'
           >
             <Trash2 size={20} />

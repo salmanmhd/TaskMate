@@ -7,7 +7,7 @@ export default function Header({ isDark, onThemeToggle }) {
 
   return (
     <div
-      className={`relative overflow-hidden rounded-xl ${bgClass} backdrop-blur-sm p-8 mb-8 border shadow-lg`}
+      className={`relative overflow-hidden rounded-xl w-full ${bgClass} backdrop-blur-sm p-8 mb-8 border shadow-lg`}
     >
       <div className='absolute inset-0 bg-gradient-to-r from-teal-500/10 to-cyan-500/10' />
       <div className='relative flex items-center justify-between'>

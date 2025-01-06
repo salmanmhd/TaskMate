@@ -36,7 +36,7 @@ export default function UserProfile() {
   };
 
   return (
-    <div className='relative'>
+    <div className='absolute border border-gray-600 py-2 px-4 rounded-full top-4 right-4 z-50'>
       <button
         onClick={() => setShowDropdown(!showDropdown)}
         className='flex items-center gap-2 text-white'
@@ -45,10 +45,10 @@ export default function UserProfile() {
         <span>{username}</span>
       </button>
       {showDropdown && (
-        <div className='absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg'>
+        <div className='absolute right-0 mt-3   rounded-md shadow-lg'>
           <button
             onClick={handleLogout}
-            className='flex items-center gap-2 w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100'
+            className='flex items-center gap-2 w-full rounded-full mt-1 bg-gray-400 px-4 py-2 text-left text-gray-900 hover:bg-gray-200 transition-colors'
           >
             <LogOut size={16} />
             Logout

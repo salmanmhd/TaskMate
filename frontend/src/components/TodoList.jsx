@@ -19,9 +19,14 @@ export default function TodoList({
     );
   }
 
+  const priorityOrder = { high: 1, medium: 2, low: 3 };
+  const sortedTodos = [...todos].sort(
+    (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]
+  );
+
   return (
     <div className='space-y-2'>
-      {todos.map((todo, i) => (
+      {sortedTodos.map((todo, i) => (
         <TodoItem
           key={i}
           todo={todo}
