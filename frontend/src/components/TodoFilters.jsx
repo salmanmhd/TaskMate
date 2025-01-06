@@ -5,6 +5,7 @@ export default function TodoFilters({ filters, onFilterChange }) {
   const [status, setStatus] = useState(filters.status);
   const [priority, setPriority] = useState(filters.priority);
   const [category, setCategory] = useState(filters.category);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleStatusChange = (e) => {
     setStatus(e.target.value);
@@ -21,39 +22,90 @@ export default function TodoFilters({ filters, onFilterChange }) {
     onFilterChange({ ...filters, category: e.target.value });
   };
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   return (
     <div className='flex items-center gap-4 mb-6 bg-gray-800 p-4 rounded-lg'>
       <Filter size={20} className='text-purple-500' />
-      <select
-        value={status}
-        onChange={handleStatusChange}
-        className='bg-gray-700 border border-gray-600 rounded-lg px-3 py-1 text-gray-100'
-      >
-        <option value='all'>All</option>
-        <option value='completed'>Completed</option>
-        <option value='pending'>Pending</option>
-      </select>
-      <select
-        value={priority}
-        onChange={handlePriorityChange}
-        className='bg-gray-700 border border-gray-600 rounded-lg px-3 py-1 text-gray-100'
-      >
-        <option value='all'>All Priorities</option>
-        <option value='high'>High</option>
-        <option value='medium'>Medium</option>
-        <option value='low'>Low</option>
-      </select>
-      <select
-        value={category}
-        onChange={handleCategoryChange}
-        className='bg-gray-700 border border-gray-600 rounded-lg px-3 py-1 text-gray-100'
-      >
-        <option value=''>All Categories</option>
-        <option value='personal'>Personal</option>
-        <option value='work'>Work</option>
-        <option value='shopping'>Shopping</option>
-        <option value='health'>Health</option>
-      </select>
+      {/* Dropdown for mobile view */}
+      <div className='sm:hidden'>
+        <button
+          onClick={toggleDropdown}
+          className='bg-gray-700 text-gray-100 rounded-lg px-3 py-1'
+        >
+          Filters
+        </button>
+        {isDropdownOpen && (
+          <div className='flex flex-col gap-4 mt-4'>
+            <select
+              value={status}
+              onChange={handleStatusChange}
+              className='bg-gray-700 border border-gray-600 rounded-lg px-3 py-1 text-gray-100'
+            >
+              <option value='all'>All</option>
+              <option value='completed'>Completed</option>
+              <option value='pending'>Pending</option>
+            </select>
+            <select
+              value={priority}
+              onChange={handlePriorityChange}
+              className='bg-gray-700 border border-gray-600 rounded-lg px-3 py-1 text-gray-100'
+            >
+              <option value='all'>All Priorities</option>
+              <option value='high'>High</option>
+              <option value='medium'>Medium</option>
+              <option value='low'>Low</option>
+            </select>
+            <select
+              value={category}
+              onChange={handleCategoryChange}
+              className='bg-gray-700 border border-gray-600 rounded-lg px-3 py-1 text-gray-100'
+            >
+              <option value=''>All Categories</option>
+              <option value='personal'>Personal</option>
+              <option value='work'>Work</option>
+              <option value='shopping'>Shopping</option>
+              <option value='health'>Health</option>
+            </select>
+          </div>
+        )}
+      </div>
+
+      {/* Filters for desktop view */}
+      <div className='hidden sm:flex items-center gap-4'>
+        <select
+          value={status}
+          onChange={handleStatusChange}
+          className='bg-gray-700 border border-gray-600 rounded-lg px-3 py-1 text-gray-100'
+        >
+          <option value='all'>All</option>
+          <option value='completed'>Completed</option>
+          <option value='pending'>Pending</option>
+        </select>
+        <select
+          value={priority}
+          onChange={handlePriorityChange}
+          className='bg-gray-700 border border-gray-600 rounded-lg px-3 py-1 text-gray-100'
+        >
+          <option value='all'>All Priorities</option>
+          <option value='high'>High</option>
+          <option value='medium'>Medium</option>
+          <option value='low'>Low</option>
+        </select>
+        <select
+          value={category}
+          onChange={handleCategoryChange}
+          className='bg-gray-700 border border-gray-600 rounded-lg px-3 py-1 text-gray-100'
+        >
+          <option value=''>All Categories</option>
+          <option value='personal'>Personal</option>
+          <option value='work'>Work</option>
+          <option value='shopping'>Shopping</option>
+          <option value='health'>Health</option>
+        </select>
+      </div>
     </div>
   );
 }

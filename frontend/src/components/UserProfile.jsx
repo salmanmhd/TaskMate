@@ -5,6 +5,7 @@ import { User, LogOut } from 'lucide-react';
 export default function UserProfile({ isDark = true }) {
   const [username, setUsername] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showName, setShowName] = useState(false); // State to toggle username visibility
   const navigate = useNavigate();
   const isAuthenticated = !!localStorage.getItem('token');
   const URL = import.meta.env.VITE_SERVER_URL;
@@ -48,22 +49,24 @@ export default function UserProfile({ isDark = true }) {
   return (
     <div
       onClick={() => setShowDropdown(!showDropdown)}
-      className={`absolute cursor-pointer top-4 right-4 z-50 border border-gray-500 hover:border-gray-200 transition-colors duration-200 transform  px-4 py-2 rounded-full shadow-lg`}
+      className={`absolute cursor-pointer top-4 right-4 z-50 border border-gray-500 hover:border-gray-200 transition-colors duration-200 transform px-4 py-2 rounded-full shadow-lg`}
     >
       <button
-        // onClick={() => setShowDropdown(!showDropdown)}
+        onClick={() => setShowName(!showName)} // Toggle name visibility on click
         className={`flex items-center gap-2 ${textClass}`}
       >
         <User size={24} />
-        <span>{username}</span>
+        <span className={`hidden sm:block ${showName ? 'block' : 'hidden'}`}>
+          {username}
+        </span>
       </button>
       {showDropdown && (
         <div
-          className={`absolute right-0 mt-4 hover:bg-gray-700  ${dropdownBgClass} rounded-full shadow-lg`}
+          className={`absolute right-0 mt-4 hover:bg-gray-700 ${dropdownBgClass} rounded-full shadow-lg`}
         >
           <button
             onClick={handleLogout}
-            className={`flex items-center gap-2  px-4 py-2 text-left ${textClass} transition-colors transform hover:scale-105`}
+            className={`flex items-center gap-2 px-4 py-2 text-left ${textClass} transition-colors transform hover:scale-105`}
           >
             <LogOut size={16} />
             Logout
