@@ -7,11 +7,11 @@ export default function Header({ isDark, onThemeToggle }) {
 
   return (
     <div
-      className={`w-full relative overflow-hidden rounded-xl ${bgClass} backdrop-blur-sm p-8 mb-8 border shadow-lg`}
+      className={`relative overflow-hidden rounded-xl ${bgClass} backdrop-blur-sm p-8 mb-8 border shadow-lg`}
     >
       <div className='absolute inset-0 bg-gradient-to-r from-teal-500/10 to-cyan-500/10' />
       <div className='relative flex items-center justify-between'>
-        <div className='flex items-end gap-3'>
+        <div className='flex items-end  gap-3'>
           <CheckSquare size={50} className='text-teal-500' />
           <h1 className='text-3xl font-bold'>Task Mate</h1>
         </div>

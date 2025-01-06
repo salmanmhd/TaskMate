@@ -29,7 +29,7 @@ export default function TodoItem({
           completed: false,
         },
       ];
-      onUpdate(todo.id, { subtasks });
+      onUpdate(todo._id, { subtasks });
       setNewSubtask('');
     }
   };
@@ -105,11 +105,11 @@ export default function TodoItem({
             const subtasks = todo.subtasks.map((st) =>
               st.id === subtaskId ? { ...st, completed: !st.completed } : st
             );
-            onUpdate(todo.id, { subtasks });
+            onUpdate(todo._id, { subtasks });
           }}
           onDeleteSubtask={(subtaskId) => {
             const subtasks = todo.subtasks.filter((st) => st.id !== subtaskId);
-            onUpdate(todo.id, { subtasks });
+            onUpdate(todo._id, { subtasks });
           }}
           isDark={isDark}
         />
@@ -133,13 +133,11 @@ export default function TodoItem({
           />
         </div>
 
-        {todo.notes && (
-          <TodoNotes
-            notes={todo.notes}
-            onUpdateNotes={(newNotes) => onUpdate(todo.id, { notes: newNotes })}
-            isDark={isDark}
-          />
-        )}
+        <TodoNotes
+          notes={todo.notes}
+          onUpdateNotes={(newNotes) => onUpdate(todo._id, { notes: newNotes })}
+          isDark={isDark}
+        />
       </div>
     </div>
   );

@@ -20,9 +20,6 @@ export default function App() {
     category: '',
   });
 
-  // Assuming you have a way to get the username, e.g., from a context or state
-  const username = 'John Doe'; // Replace with actual username retrieval logic
-
   return (
     <Router>
       <div
@@ -35,7 +32,7 @@ export default function App() {
         <div className='container mx-auto px-4 py-8 max-w-3xl'>
           <div className='flex justify-between items-center'>
             <Header isDark={isDark} onThemeToggle={toggleTheme} />
-            <UserProfile username={username} />
+            <UserProfile />
           </div>
           <Routes>
             <Route path='/signup' element={<Signup />} />

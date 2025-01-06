@@ -80,7 +80,7 @@ export function useTodos() {
       });
       const data = await response.json();
       if (response.ok) {
-        setTodos(todos.map((t) => (t.id === id ? { ...t, ...data } : t)));
+        setTodos(todos.map((t) => (t._id === id ? { ...t, ...data } : t)));
       } else {
         console.error(data.message);
       }
