@@ -11,8 +11,14 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_PASS;
 
-// Middleware
-app.use(cors());
+const corsOptions = {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 // Connect to MongoDB
@@ -48,7 +54,6 @@ const todoSchema = new mongoose.Schema({
 
 const Todo = mongoose.model('Todo', todoSchema);
 
-// User Registration
 app.post('/signup', async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -61,7 +66,6 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-// User Login
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -82,7 +86,6 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// Middleware to verify JWT
 const authenticateToken = (req, res, next) => {
   const token = req.headers['authorization'];
   if (!token) return res.status(401).json({ message: 'Access denied' });
