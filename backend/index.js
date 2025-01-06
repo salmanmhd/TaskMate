@@ -55,10 +55,22 @@ const todoSchema = new mongoose.Schema({
 const Todo = mongoose.model('Todo', todoSchema);
 
 app.post('/signup', async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
+  if (!email || !password || password.length < 5) {
+    return res
+      .status(400)
+      .json({
+        message:
+          'Email and password are required. Password must be at least 5 characters long.',
+      });
+  }
   try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email is already in use.' });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, password: hashedPassword });
+    const newUser = new User({ email, password: hashedPassword });
     await newUser.save();
     res.status(201).json({ message: 'User created successfully' });
   } catch (error) {
@@ -67,15 +79,20 @@ app.post('/signup', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res
+      .status(400)
+      .json({ message: 'Email and password are required.' });
+  }
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: 'Invalid username or password' });
+      return res.status(400).json({ message: 'Invalid email or password' });
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(400).json({ message: 'Invalid username or password' });
+      return res.status(400).json({ message: 'Invalid email or password' });
     }
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
       expiresIn: '1h',

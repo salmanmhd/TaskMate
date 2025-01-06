@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login({ isDark }) {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
@@ -10,11 +10,15 @@ export default function Login({ isDark }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (password.length < 5) {
+      setErrorMessage('Password must be at least 5 characters long.');
+      return;
+    }
     try {
       const response = await fetch(`${URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
       if (response.ok) {
@@ -41,10 +45,10 @@ export default function Login({ isDark }) {
           <div className='text-red-500 text-sm mb-4'>{errorMessage}</div>
         )}
         <input
-          type='text'
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder='Username'
+          type='email'
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder='Email'
           className={`w-full p-2 border border-teal-950 rounded-md ${inputClass}`}
           required
         />
@@ -52,7 +56,7 @@ export default function Login({ isDark }) {
           type='password'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder='Password'
+          placeholder='Password (min 5 characters)'
           className={`w-full mb-4 p-2 border border-teal-950 rounded-md ${inputClass}`}
           required
         />
