@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Filter } from 'lucide-react';
 
-export default function TodoFilters({ filters, onFilterChange, isDark }) {
+export default function TodoFilters({ filters, onFilterChange }) {
   const [status, setStatus] = useState(filters.status);
   const [priority, setPriority] = useState(filters.priority);
   const [category, setCategory] = useState(filters.category);

@@ -58,10 +58,12 @@ export default function TodoItem({
     ? 'bg-gray-900/90 border-gray-600/30'
     : 'bg-white/90 border-gray-200/50';
 
+  const fadeClass = todo.completed ? 'opacity-50' : 'opacity-100';
+
   return (
     <div className='group'>
       <div
-        className={`relative overflow-hidden p-4 ${bgClass} backdrop-blur-sm rounded-lg mb-2 transition-all duration-300 border shadow-lg hover:shadow-xl`}
+        className={`relative overflow-hidden p-4 ${bgClass} ${fadeClass} backdrop-blur-sm rounded-lg mb-2 transition-all duration-300 border shadow-lg hover:shadow-xl`}
       >
         <div
           className={`absolute inset-0 bg-gradient-to-r ${
@@ -124,6 +126,7 @@ export default function TodoItem({
           onToggleSubtask={onToggleSubtask}
           onDeleteSubtask={onDeleteSubtask}
           isDark={isDark}
+          disableSubtasks={disableSubtasks}
         />
 
         <div className='relative flex items-center gap-2 z-10'>
