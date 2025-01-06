@@ -4,8 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 export default function Login({ isDark }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const URL = import.meta.env.VITE_SERVER_URL;
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -19,10 +21,10 @@ export default function Login({ isDark }) {
         localStorage.setItem('token', data.token);
         navigate('/');
       } else {
-        console.error(data.message);
+        setErrorMessage(data.message || 'Login failed. Please try again.');
       }
     } catch (error) {
-      console.error('Error logging in:', error);
+      setErrorMessage('Error logging in. Please try again later.');
     }
   };
 
@@ -32,9 +34,12 @@ export default function Login({ isDark }) {
     : 'bg-gray-100 text-gray-900';
 
   return (
-    <div className={` flex items-center justify-center rounded-xl ${bgClass}`}>
+    <div className={`flex items-center justify-center rounded-xl ${bgClass}`}>
       <form onSubmit={handleLogin} className='w-full max-w-md p-8 space-y-4'>
         <h2 className='text-2xl font-bold'>Log In</h2>
+        {errorMessage && (
+          <div className='text-red-500 text-sm mb-4'>{errorMessage}</div>
+        )}
         <input
           type='text'
           value={username}

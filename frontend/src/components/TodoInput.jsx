@@ -26,23 +26,23 @@ export default function TodoInput({ onAdd, isDark }) {
 
   return (
     <form onSubmit={handleSubmit} className='space-y-4 mb-8'>
-      <div className='flex gap-4'>
+      <div className='flex gap-4 flex-wrap'>
         <input
           type='text'
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder='Add a new task...'
-          className={`flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500/50 ${inputClasses}`}
+          className={`flex-1 min-w-[200px] border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500/50 ${inputClasses}`}
         />
         <button
           type='submit'
-          className='bg-teal-600 hover:bg-teal-500 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition-colors shadow-lg shadow-teal-500/20'
+          className='bg-teal-600 hover:bg-teal-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors shadow-lg shadow-teal-500/20'
         >
           <PlusCircle size={20} />
-          Add Task
+          <span className='hidden sm:block'>Add Task</span>
         </button>
       </div>
-      <div className='flex gap-4'>
+      <div className='flex gap-4 flex-wrap'>
         <select
           value={priority}
           onChange={(e) => setPriority(e.target.value)}
