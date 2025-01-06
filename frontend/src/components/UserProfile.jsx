@@ -41,6 +41,8 @@ export default function UserProfile({ isDark }) {
   if (!isAuthenticated) return null;
 
   const bgClass = isDark ? 'bg-gray-800 text-white' : 'bg-white text-gray-900';
+  const dropdownBgClass = isDark ? 'bg-gray-700' : 'bg-gray-100';
+  const textClass = isDark ? 'text-white' : 'text-gray-900';
 
   return (
     <div
@@ -48,16 +50,18 @@ export default function UserProfile({ isDark }) {
     >
       <button
         onClick={() => setShowDropdown(!showDropdown)}
-        className='flex items-center gap-2 text-white'
+        className={`flex items-center gap-2 ${textClass}`}
       >
         <User size={24} />
         <span>{username}</span>
       </button>
       {showDropdown && (
-        <div className='absolute right-0 mt-3 w-48 bg-white rounded-md shadow-lg'>
+        <div
+          className={`absolute right-0 mt-3 w-48 ${dropdownBgClass} rounded-md shadow-lg`}
+        >
           <button
             onClick={handleLogout}
-            className='flex items-center gap-2 w-full px-4 py-2 text-left text-gray-900 hover:bg-gray-200 transition-colors transform hover:scale-105'
+            className={`flex items-center gap-2 w-full px-4 py-2 text-left ${textClass} hover:bg-gray-200 transition-colors transform hover:scale-105`}
           >
             <LogOut size={16} />
             Logout

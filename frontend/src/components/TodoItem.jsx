@@ -10,6 +10,7 @@ export default function TodoItem({
   onDelete,
   onUpdate,
   isDark,
+  disableSubtasks,
 }) {
   const [newSubtask, setNewSubtask] = useState('');
 
@@ -20,6 +21,7 @@ export default function TodoItem({
   };
 
   const addSubtask = (e) => {
+    if (disableSubtasks) return;
     if (e.key === 'Enter' && newSubtask.trim()) {
       const subtasks = [
         ...(todo.subtasks || []),
@@ -32,6 +34,24 @@ export default function TodoItem({
       onUpdate(todo._id, { subtasks });
       setNewSubtask('');
     }
+  };
+
+  const onToggleSubtask = (subtaskId) => {
+    if (disableSubtasks) return;
+    const updatedSubtasks = todo.subtasks.map((subtask) =>
+      subtask.id === subtaskId
+        ? { ...subtask, completed: !subtask.completed }
+        : subtask
+    );
+    onUpdate(todo._id, { subtasks: updatedSubtasks });
+  };
+
+  const onDeleteSubtask = (subtaskId) => {
+    if (disableSubtasks) return;
+    const updatedSubtasks = todo.subtasks.filter(
+      (subtask) => subtask.id !== subtaskId
+    );
+    onUpdate(todo._id, { subtasks: updatedSubtasks });
   };
 
   const bgClass = isDark
@@ -100,17 +120,9 @@ export default function TodoItem({
         )}
 
         <TodoSubtasks
-          subtasks={todo.subtasks || []}
-          onToggleSubtask={(subtaskId) => {
-            const subtasks = todo.subtasks.map((st) =>
-              st.id === subtaskId ? { ...st, completed: !st.completed } : st
-            );
-            onUpdate(todo._id, { subtasks });
-          }}
-          onDeleteSubtask={(subtaskId) => {
-            const subtasks = todo.subtasks.filter((st) => st.id !== subtaskId);
-            onUpdate(todo._id, { subtasks });
-          }}
+          subtasks={todo.subtasks}
+          onToggleSubtask={onToggleSubtask}
+          onDeleteSubtask={onDeleteSubtask}
           isDark={isDark}
         />
 

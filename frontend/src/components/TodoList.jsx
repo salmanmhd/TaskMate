@@ -20,9 +20,12 @@ export default function TodoList({
   }
 
   const priorityOrder = { high: 1, medium: 2, low: 3 };
-  const sortedTodos = [...todos].sort(
-    (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]
-  );
+  const sortedTodos = [...todos].sort((a, b) => {
+    if (a.completed !== b.completed) {
+      return a.completed ? 1 : -1; // Incomplete tasks first
+    }
+    return priorityOrder[a.priority] - priorityOrder[b.priority];
+  });
 
   return (
     <div className='space-y-2'>
@@ -34,6 +37,7 @@ export default function TodoList({
           onDelete={onDelete}
           onUpdate={onUpdate}
           isDark={isDark}
+          disableSubtasks={todo.completed}
         />
       ))}
     </div>
