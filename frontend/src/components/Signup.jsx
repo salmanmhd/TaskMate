@@ -7,11 +7,12 @@ export default function Signup({ isDark }) {
   const [password, setPassword] = useState('');
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const URL = import.meta.env.VITE_SERVER_URL;
 
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/signup', {
+      const response = await fetch(`${URL}/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -33,7 +34,7 @@ export default function Signup({ isDark }) {
     : 'bg-gray-100 text-gray-900';
 
   return (
-    <div className={`min-h-screen flex items-center justify-center ${bgClass}`}>
+    <div className={`rounded-xl flex items-center justify-center ${bgClass}`}>
       <form onSubmit={handleSignup} className='w-full max-w-md p-8 space-y-4'>
         <h2 className='text-2xl font-bold'>Sign Up</h2>
         <input
@@ -41,7 +42,7 @@ export default function Signup({ isDark }) {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder='Username'
-          className={`w-full p-2 border rounded ${inputClass}`}
+          className={`w-full p-2 border rounded-md border-teal-950 ${inputClass}`}
           required
         />
         <input
@@ -49,12 +50,12 @@ export default function Signup({ isDark }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder='Password'
-          className={`w-full mb-4 p-2 border rounded ${inputClass}`}
+          className={`w-full mb-4 p-2 border rounded-md border-teal-950 ${inputClass}`}
           required
         />
         <button
           type='submit'
-          className='w-full bg-teal-500 text-white py-2 rounded hover:bg-teal-600 transition-colors'
+          className='w-full bg-teal-600  text-white py-2 rounded-full hover:bg-teal-600 transition-colors'
         >
           Sign Up
         </button>

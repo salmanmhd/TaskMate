@@ -3,14 +3,20 @@ import { useState } from 'react';
 
 export default function TodoNotes({ notes, onUpdateNotes }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [newNotes, setNewNotes] = useState(notes);
+
+  function handleOnBlur() {
+    setIsEditing(false);
+    onUpdateNotes(newNotes);
+  }
 
   return (
     <div className='pl-12 mt-2'>
       {isEditing ? (
         <textarea
-          value={notes}
-          onChange={(e) => onUpdateNotes(e.target.value)}
-          onBlur={() => setIsEditing(false)}
+          value={newNotes}
+          onChange={(e) => setNewNotes(e.target.value)}
+          onBlur={handleOnBlur}
           className='w-full bg-gray-700/50 rounded-lg p-2 text-sm text-gray-200 focus:outline-none focus:ring-1 focus:ring-purple-500'
           rows={3}
           autoFocus

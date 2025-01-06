@@ -5,11 +5,11 @@ export default function Login({ isDark }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-
+  const URL = import.meta.env.VITE_SERVER_URL;
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/login', {
+      const response = await fetch(`${URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -32,7 +32,7 @@ export default function Login({ isDark }) {
     : 'bg-gray-100 text-gray-900';
 
   return (
-    <div className={`min-h-screen flex items-center justify-center ${bgClass}`}>
+    <div className={` flex items-center justify-center rounded-xl ${bgClass}`}>
       <form onSubmit={handleLogin} className='w-full max-w-md p-8 space-y-4'>
         <h2 className='text-2xl font-bold'>Log In</h2>
         <input
@@ -40,7 +40,7 @@ export default function Login({ isDark }) {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder='Username'
-          className={`w-full p-2 border rounded ${inputClass}`}
+          className={`w-full p-2 border border-teal-950 rounded-md ${inputClass}`}
           required
         />
         <input
@@ -48,18 +48,18 @@ export default function Login({ isDark }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder='Password'
-          className={`w-full mb-4 p-2 border rounded ${inputClass}`}
+          className={`w-full mb-4 p-2 border border-teal-950 rounded-md ${inputClass}`}
           required
         />
         <button
           type='submit'
-          className='w-full bg-teal-500 text-white py-2 rounded hover:bg-teal-600 transition-colors'
+          className='w-full bg-teal-600 text-white py-2 rounded-full hover:bg-teal-700 transition-colors'
         >
           Log In
         </button>
         <div className='mt-4 text-center'>
           <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
           </span>
           <Link to='/signup' className='text-teal-500 hover:underline'>
             Sign Up
