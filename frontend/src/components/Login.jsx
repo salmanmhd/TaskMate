@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-export default function Login({ isDark = true }) {
+export default function Login({ isDark }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -19,34 +19,28 @@ export default function Login({ isDark = true }) {
         localStorage.setItem('token', data.token);
         navigate('/');
       } else {
-        alert(data.message);
+        console.error(data.message);
       }
     } catch (error) {
-      alert('Error logging in', error);
+      console.error('Error logging in:', error);
     }
   };
 
-  const formClass = isDark ? 'bg-gray-800' : 'bg-white';
-  const textClass = isDark ? 'text-white' : 'text-gray-900';
+  const bgClass = isDark ? 'bg-gray-800 text-white' : 'bg-white text-gray-900';
   const inputClass = isDark
-    ? 'bg-gray-700 text-white border-gray-600'
-    : 'bg-white text-gray-900 border-gray-300';
+    ? 'bg-gray-700 text-white'
+    : 'bg-gray-100 text-gray-900';
 
   return (
-    <div className='flex justify-center items-center mt-32'>
-      <form
-        onSubmit={handleLogin}
-        className={`${formClass} p-8 rounded-lg shadow-lg w-80`}
-      >
-        <h2 className={`text-2xl font-bold mb-6 text-center ${textClass}`}>
-          Login
-        </h2>
+    <div className={`min-h-screen flex items-center justify-center ${bgClass}`}>
+      <form onSubmit={handleLogin} className='w-full max-w-md p-8 space-y-4'>
+        <h2 className='text-2xl font-bold'>Log In</h2>
         <input
           type='text'
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder='Username'
-          className={`w-full mb-4 p-2 border rounded ${inputClass}`}
+          className={`w-full p-2 border rounded ${inputClass}`}
           required
         />
         <input
@@ -64,7 +58,9 @@ export default function Login({ isDark = true }) {
           Log In
         </button>
         <div className='mt-4 text-center'>
-          <span className={textClass}>Don&apos;t have an account? </span>
+          <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>
+            Don't have an account?{' '}
+          </span>
           <Link to='/signup' className='text-teal-500 hover:underline'>
             Sign Up
           </Link>

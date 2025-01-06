@@ -35,8 +35,8 @@ export default function App() {
             <UserProfile />
           </div>
           <Routes>
-            <Route path='/signup' element={<Signup />} />
-            <Route path='/login' element={<Login />} />
+            <Route path='/signup' element={<Signup isDark={isDark} />} />
+            <Route path='/login' element={<Login isDark={isDark} />} />
             <Route
               path='/'
               element={

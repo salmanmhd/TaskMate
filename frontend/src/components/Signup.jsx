@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from './Modal';
 
-export default function Signup({ isDark = true }) {
+export default function Signup({ isDark }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -11,45 +11,37 @@ export default function Signup({ isDark = true }) {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const payload = { username, password };
-      console.log('Signup payload:', payload);
       const response = await fetch('http://localhost:5000/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ username, password }),
       });
       const data = await response.json();
       if (response.ok) {
         setShowModal(true);
       } else {
-        alert(data.message);
+        console.error(data.message);
       }
     } catch (error) {
-      alert('Error signing up', error);
+      console.error('Error signing up:', error);
     }
   };
 
-  const formClass = isDark ? 'bg-gray-800' : 'bg-white';
-  const textClass = isDark ? 'text-white' : 'text-gray-900';
+  const bgClass = isDark ? 'bg-gray-800 text-white' : 'bg-white text-gray-900';
   const inputClass = isDark
-    ? 'bg-gray-700 text-white border-gray-600'
-    : 'bg-white text-gray-900 border-gray-300';
+    ? 'bg-gray-700 text-white'
+    : 'bg-gray-100 text-gray-900';
 
   return (
-    <div className='flex justify-center items-center mt-32'>
-      <form
-        onSubmit={handleSignup}
-        className={`${formClass} p-8 rounded-lg shadow-lg w-80`}
-      >
-        <h2 className={`text-2xl font-bold mb-6 text-center ${textClass}`}>
-          Sign Up
-        </h2>
+    <div className={`min-h-screen flex items-center justify-center ${bgClass}`}>
+      <form onSubmit={handleSignup} className='w-full max-w-md p-8 space-y-4'>
+        <h2 className='text-2xl font-bold'>Sign Up</h2>
         <input
           type='text'
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder='Username'
-          className={`w-full mb-4 p-2 border rounded ${inputClass}`}
+          className={`w-full p-2 border rounded ${inputClass}`}
           required
         />
         <input
@@ -67,7 +59,9 @@ export default function Signup({ isDark = true }) {
           Sign Up
         </button>
         <div className='mt-4 text-center'>
-          <span className={textClass}>Already have an account? </span>
+          <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>
+            Already have an account?{' '}
+          </span>
           <Link to='/login' className='text-teal-500 hover:underline'>
             Log In
           </Link>
