@@ -28,7 +28,7 @@ export default function Login({ isDark }) {
         setErrorMessage(data.message || 'Login failed. Please try again.');
       }
     } catch (error) {
-      setErrorMessage('Error logging in. Please try again later.');
+      setErrorMessage('Error logging in. Please try again later.', error);
     }
   };
 

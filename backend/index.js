@@ -57,12 +57,10 @@ const Todo = mongoose.model('Todo', todoSchema);
 app.post('/signup', async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password || password.length < 5) {
-    return res
-      .status(400)
-      .json({
-        message:
-          'Email and password are required. Password must be at least 5 characters long.',
-      });
+    return res.status(400).json({
+      message:
+        'Email and password are required. Password must be at least 5 characters long.',
+    });
   }
   try {
     const existingUser = await User.findOne({ email });
@@ -179,6 +177,10 @@ app.get('/user', authenticateToken, async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Error fetching user data' });
   }
+});
+
+app.get('/', (req, res) => {
+  res.send('Server running...');
 });
 
 // Start the server
