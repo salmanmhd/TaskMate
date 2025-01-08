@@ -30,6 +30,7 @@ export default function Signup({ isDark }) {
       }
     } catch (error) {
       setErrorMessage('Error signing up. Please try again later.');
+      console.log(error);
     }
   };
 
