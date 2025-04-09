@@ -1,23 +1,24 @@
-import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import TodoInput from './components/TodoInput';
-import TodoList from './components/TodoList';
-import TodoFiltersComponent from './components/TodoFilters';
-import TodoStats from './components/TodoStats';
-import { useTodos } from './hooks/useTodos';
-import { useTheme } from './hooks/useTheme';
-import Signup from './components/Signup';
-import Login from './components/Login';
-import ProtectedRoute from './components/ProtectedRoute';
-import UserProfile from './components/UserProfile';
+import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import TodoInput from "./components/TodoInput";
+import TodoList from "./components/TodoList";
+import TodoFiltersComponent from "./components/TodoFilters";
+import TodoStats from "./components/TodoStats";
+import { useTodos } from "./hooks/useTodos";
+import { useTheme } from "./hooks/useTheme";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
+import UserProfile from "./components/UserProfile";
+import Landing from "./pages/Landing";
 
 export default function App() {
   const { isDark, toggleTheme } = useTheme();
   const [filters, setFilters] = useState({
-    status: 'all',
-    priority: 'all',
-    category: '',
+    status: "all",
+    priority: "all",
+    category: "",
   });
 
   return (
@@ -25,20 +26,22 @@ export default function App() {
       <div
         className={`min-h-screen ${
           isDark
-            ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white'
-            : 'bg-gradient-to-br from-gray-50 via-white to-gray-50 text-gray-900'
+            ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white"
+            : "bg-gradient-to-br from-gray-50 via-white to-gray-50 text-gray-900"
         } transition-colors duration-300`}
       >
-        <div className='container mx-auto px-4 py-8 max-w-3xl'>
-          <div className='flex justify-between items-center'>
+        <div className="container mx-auto px-4 py-8 max-w-3xl">
+          <div className="flex justify-between items-center">
             <Header isDark={isDark} onThemeToggle={toggleTheme} />
             <UserProfile />
           </div>
           <Routes>
-            <Route path='/signup' element={<Signup isDark={isDark} />} />
-            <Route path='/login' element={<Login isDark={isDark} />} />
+            <Route path="/" element={<Landing isDark={isDark} />} />
+
+            <Route path="/signup" element={<Signup isDark={isDark} />} />
+            <Route path="/login" element={<Login isDark={isDark} />} />
             <Route
-              path='/'
+              path="/todos"
               element={
                 <ProtectedRoute>
                   <TodoApp
@@ -62,13 +65,13 @@ function TodoApp({ isDark, filters, setFilters }) {
 
   const filteredTodos = todos.filter((todo) => {
     const statusMatch =
-      filters.status === 'all'
+      filters.status === "all"
         ? true
-        : filters.status === 'completed'
+        : filters.status === "completed"
         ? todo.completed
         : !todo.completed;
     const priorityMatch =
-      filters.priority === 'all' || todo.priority === filters.priority;
+      filters.priority === "all" || todo.priority === filters.priority;
     const categoryMatch =
       !filters.category || todo.category === filters.category;
     return statusMatch && priorityMatch && categoryMatch;
