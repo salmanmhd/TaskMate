@@ -1,4 +1,5 @@
 import { CheckCircle, Target, ArrowDown, ListTodo, Tags } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Landing({ onGetStarted, isDark = true }) {
   const quotes = [
@@ -12,13 +13,19 @@ export default function Landing({ onGetStarted, isDark = true }) {
     },
   ];
 
+  const navigate = useNavigate();
+
+  function handleStart() {
+    navigate("/todos");
+  }
+
   return (
     <div
       className={`${
         isDark
           ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950"
           : "bg-gradient-to-br from-gray-50 via-white to-gray-50"
-      }`}
+      } transition-colors duration-300 `}
     >
       {/* Hero Section - First Screen */}
       <div className="min-h-screen flex items-center justify-center relative">
@@ -41,7 +48,7 @@ export default function Landing({ onGetStarted, isDark = true }) {
             &quot;What gets scheduled, gets done.&quot;
           </p>
           <button
-            onClick={onGetStarted}
+            onClick={handleStart}
             className="bg-teal-600 hover:bg-teal-500 text-white px-10 py-4 rounded-lg text-xl font-semibold transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
           >
             Start Now
@@ -413,7 +420,7 @@ export default function Landing({ onGetStarted, isDark = true }) {
               achieve more
             </p>
             <button
-              onClick={onGetStarted}
+              onClick={handleStart}
               className="bg-teal-600 hover:bg-teal-500 text-white px-10 py-4 rounded-lg text-xl font-semibold transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               Get Started Now
