@@ -1,9 +1,9 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import cors from "cors";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 
@@ -12,30 +12,27 @@ const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_PASS;
 
 const corsOptions = {
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
 
 app.use(express.json());
 
-// Connect to MongoDB
 mongoose
   .connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((error) => console.error('Error connecting to MongoDB:', error));
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((error) => console.error("Error connecting to MongoDB:", error));
 
-// User Schema and Model
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
-// Todo Schema and Model
 const todoSchema = new mongoose.Schema({
   title: String,
   priority: String,
@@ -49,87 +46,86 @@ const todoSchema = new mongoose.Schema({
     },
   ],
   notes: String,
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 });
 
-const Todo = mongoose.model('Todo', todoSchema);
+const Todo = mongoose.model("Todo", todoSchema);
 
-app.post('/signup', async (req, res) => {
+app.post("/signup", async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password || password.length < 5) {
     return res.status(400).json({
       message:
-        'Email and password are required. Password must be at least 5 characters long.',
+        "Email and password are required. Password must be at least 5 characters long.",
     });
   }
 
   try {
     const existingUser = await User.findOne({ email }).lean();
     if (existingUser) {
-      return res.status(400).json({ message: 'Email is already in use.' });
+      return res.status(400).json({ message: "Email is already in use." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ email, password: hashedPassword });
     await newUser.save();
-    res.status(201).json({ message: 'User created successfully' });
+    res.status(201).json({ message: "User created successfully" });
   } catch (error) {
-    console.error('Error during signup:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Error during signup:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
-app.post('/login', async (req, res) => {
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res
       .status(400)
-      .json({ message: 'Email and password are required.' });
+      .json({ message: "Email and password are required." });
   }
 
   try {
     const user = await User.findOne({ email }).lean();
     if (!user) {
-      return res.status(400).json({ message: 'Invalid email or password' });
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(400).json({ message: 'Invalid email or password' });
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
-      expiresIn: '24h',
+      expiresIn: "24h",
     });
     res.json({ token });
   } catch (error) {
-    console.error('Error during login:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Error during login:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
 const authenticateToken = (req, res, next) => {
-  const token = req.headers['authorization'];
-  if (!token) return res.status(401).json({ message: 'Access denied' });
+  const token = req.headers["authorization"];
+  if (!token) return res.status(401).json({ message: "Access denied" });
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.status(403).json({ message: 'Invalid token' });
+    if (err) return res.status(403).json({ message: "Invalid token" });
     req.user = user;
     next();
   });
 };
 
-// Routes
-app.get('/todos', authenticateToken, async (req, res) => {
+app.get("/todos", authenticateToken, async (req, res) => {
   try {
     const todos = await Todo.find({ userId: req.user.userId });
     res.json(todos);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching todos' });
+    res.status(500).json({ message: "Error fetching todos" });
   }
 });
 
-app.post('/todos', authenticateToken, async (req, res) => {
+app.post("/todos", authenticateToken, async (req, res) => {
   const { title, priority, category, completed, subtasks, notes } = req.body;
   const newTodo = new Todo({
     title,
@@ -145,11 +141,11 @@ app.post('/todos', authenticateToken, async (req, res) => {
     const savedTodo = await newTodo.save();
     res.status(201).json(savedTodo);
   } catch (error) {
-    res.status(400).json({ message: 'Error saving todo' });
+    res.status(400).json({ message: "Error saving todo" });
   }
 });
 
-app.put('/todos/:id', authenticateToken, async (req, res) => {
+app.put("/todos/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
 
@@ -159,38 +155,37 @@ app.put('/todos/:id', authenticateToken, async (req, res) => {
     });
     res.json(updatedTodo);
   } catch (error) {
-    res.status(400).json({ message: 'Error updating todo' });
+    res.status(400).json({ message: "Error updating todo" });
   }
 });
 
-app.delete('/todos/:id', async (req, res) => {
+app.delete("/todos/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
     await Todo.findByIdAndDelete(id);
-    res.json({ message: 'Todo deleted' });
+    res.json({ message: "Todo deleted" });
   } catch (error) {
-    res.status(400).json({ message: 'Error deleting todo' });
+    res.status(400).json({ message: "Error deleting todo" });
   }
 });
 
-app.get('/user', authenticateToken, async (req, res) => {
+app.get("/user", authenticateToken, async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId).select('username');
+    const user = await User.findById(req.user.userId).select("username");
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
     res.json({ username: user.username });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching user data' });
+    res.status(500).json({ message: "Error fetching user data" });
   }
 });
 
-app.get('/', (req, res) => {
-  res.send('Server running...');
+app.get("/", (req, res) => {
+  res.send("Server running...");
 });
 
-// Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
