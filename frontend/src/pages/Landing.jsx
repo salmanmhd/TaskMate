@@ -1,7 +1,7 @@
 import { CheckCircle, Target, ArrowDown, ListTodo, Tags } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export default function Landing({ onGetStarted, isDark = true }) {
+export default function Landing({ isDark = true }) {
   const quotes = [
     {
       text: "The key is not to prioritize what's on your schedule, but to schedule your priorities.",
